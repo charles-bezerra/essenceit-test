@@ -19,11 +19,14 @@
                <List items="{/comments}">
                   <CustomListItem type="Inactive">
                      <FlexBox>
-                        <Label text="{id}"/>
-                        <Text text="{message}"/>
+                        <Text text="{id}" width="50px"/>
+                        
+                        <Text text="{comment}"/>
+
                         <Button 
-                           text="Excluir" 
+                           text="Excluir"
                            class="content"
+                           press=".rmComment"
                            width="100px"/>
                      </FlexBox>
                   </CustomListItem>             

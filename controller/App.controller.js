@@ -1,14 +1,22 @@
-function createComment(comment) {
+function getComments() {
     let data = localStorage.getItem('comments');
+    if (!data) 
+        data = "[]";
+    return JSON.parse(data);
+}
+
+
+function getLastID() {
     let id = localStorage.getItem('lastID');
-    
-    if (data && id) {
-        data = JSON.parse(data);
-        id = JSON.parse(id);                  
-    } else {
+    if (!id)
         id = 0;
-        data = [];
-    }
+    return JSON.parse(id);
+}
+
+
+function createComment(comment) {
+    let data = getComments();
+    let id = getLastID();
 
     id++;
 
@@ -18,16 +26,35 @@ function createComment(comment) {
 }
 
 
-function getComments() {
-    let data = localStorage.getItem('comments');
-    if (!data) 
-        data = "[]";
-    return JSON.parse(data);
+function BinarySearchID(array, element) {
+    function search(left, right) {        
+        if (left > right)
+            return null; 
+
+        else {
+            const middle = left + (right-left)/2;
+
+            if (element===array[middle]['id'])
+                return middle;
+            else if (element>array[middle]['id'])
+                return search(middle+1, right);
+            else
+                return search(left, middle-1);
+        }
+    }
+
+    return search(0, array.length);
 }
 
 
 function deleteComment(id) {
-    
+    let comments = getComments();
+    let index = BinarySearchID(comments, id);
+
+    if (index) {        
+        comments.splice(index, 1);
+        localStorage.setItem("comments", JSON.stringify(comments));
+    }    
 }
 
 
@@ -35,8 +62,6 @@ function AppController(Controller, JSONModel) {
     'use strict';    
 
     return Controller.extend("commentshub.controller.App", {
-        data: [],
-
         onInit: function () {
             this.update();
         },
@@ -46,14 +71,12 @@ function AppController(Controller, JSONModel) {
             this.update();
         },
 
-        rmComment: function (id) {
-            deleteComment(id);
+        rmComment: function () {
+            deleteComment(1);
             this.update();
         },
 
         update: function () {
-            this.data = getComments();
-
             let oData = new JSONModel({
                 page: { name: "CommentsHub" },   
                 comments: getComments()
