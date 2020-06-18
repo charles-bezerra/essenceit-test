@@ -15,14 +15,16 @@ function getLastID() {
 
 
 function createComment(comment) {
-    let data = getComments();
-    let id = getLastID();
+    getComments()
+    .then((comments) => {
+        let id = getLastID();
 
-    id++;
+        id++;
 
-    data.push({id: id, comment: comment});
-    localStorage.setItem("comments", JSON.stringify(data) );
-    localStorage.setItem("lastID", id);
+        data.push({id: id, comment: comment});
+        localStorage.setItem("comments", JSON.stringify(data) );
+        localStorage.setItem("lastID", id);
+    });
 }
 
 
