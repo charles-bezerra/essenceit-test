@@ -21,8 +21,8 @@ function createComment(comment) {
 
         id++;
 
-        data.push({id: id, comment: comment});
-        localStorage.setItem("comments", JSON.stringify(data) );
+        comments.push({id: id, comment: comment});
+        localStorage.setItem("comments", JSON.stringify(comments) );
         localStorage.setItem("lastID", id);
     });
 }
