@@ -1,5 +1,5 @@
-async function getComments() {
-    let data = await localStorage.getItem('comments');
+function getComments() {
+    let data = localStorage.getItem('comments');
     if (!data) 
         data = "[]";
     return JSON.parse(data);
@@ -15,16 +15,14 @@ function getLastID() {
 
 
 function createComment(comment) {
-    getComments()
-    .then((comments) => {
-        let id = getLastID();
+    let comments = getComments();
+    let id = getLastID();
 
-        id++;
+    id++;
 
-        comments.push({id: id, comment: comment});
-        localStorage.setItem("comments", JSON.stringify(comments) );
-        localStorage.setItem("lastID", id);
-    });
+    comments.push({id: id, comment: comment});
+    localStorage.setItem("comments", JSON.stringify(comments) );
+    localStorage.setItem("lastID", id);
 }
 
 
@@ -34,31 +32,31 @@ function BinarySearchID(array, element) {
             return null; 
 
         else {
-            const middle = left + (right-left)/2;
+            const middle = left + parseInt( (right-left)/2 );
 
-            if (element===array[middle]['id'])
+            if (element===array[middle].id)
                 return middle;
-            else if (element>array[middle]['id'])
+            else if (element>array[middle].id)
                 return search(middle+1, right);
             else
                 return search(left, middle-1);
         }
     }
-
-    return search(0, array.length);
+    return search(0, array.length-1);
 }
 
 
 function deleteComment(id) {
-    getComments()
-    .then( (comments) => {
-        let index = BinarySearchID(comments, id);
+    let comments = getComments();
+    let index = BinarySearchID(comments, id);    
 
-        if (index) {        
-            comments.splice(index, 1);
-            localStorage.setItem("comments", JSON.stringify(comments));
-        }    
-    });
+    if (index !== null) {        
+        comments.splice(index, 1);
+        localStorage.setItem("comments", JSON.stringify(comments));
+    } 
+    else {
+        alert("Comentário não existe!");
+    }
 }
 
 
@@ -76,11 +74,11 @@ function AppController(Controller, JSONModel) {
         },
 
         rmComment: function () {
-            deleteComment(1);
+            deleteComment(2);
             this.update();
         },
 
-        update: function () {
+        update: function () {            
             let oData = new JSONModel({
                 page: { name: "CommentsHub" },   
                 comments: getComments()
