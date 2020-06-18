@@ -1,5 +1,5 @@
-function getComments() {
-    let data = localStorage.getItem('comments');
+async function getComments() {
+    let data = await localStorage.getItem('comments');
     if (!data) 
         data = "[]";
     return JSON.parse(data);
@@ -48,13 +48,15 @@ function BinarySearchID(array, element) {
 
 
 function deleteComment(id) {
-    let comments = getComments();
-    let index = BinarySearchID(comments, id);
+    getComments()
+    .then( (comments) => {
+        let index = BinarySearchID(comments, id);
 
-    if (index) {        
-        comments.splice(index, 1);
-        localStorage.setItem("comments", JSON.stringify(comments));
-    }    
+        if (index) {        
+            comments.splice(index, 1);
+            localStorage.setItem("comments", JSON.stringify(comments));
+        }    
+    });
 }
 
 
