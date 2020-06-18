@@ -1,0 +1,37 @@
+<mvc:View
+   controllerName="commentshub.controller.App"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc"
+   displayblock="true">
+
+   <App>
+      <pages>
+         <Page title="{/page/name}">
+            <content>
+               
+               <FlexBox 
+                  alignItems="Center"
+                  justifyContent="Center">          
+
+                  <Button text="Adicionar comentário" press=".addComment" />
+               </FlexBox>
+               
+               <List items="{/comments}">
+                  <CustomListItem type="Inactive">
+                     <FlexBox>
+                        <Label text="{id}"/>
+                        <Text text="{message}"/>
+                        <Button 
+                           text="Excluir" 
+                           class="content"
+                           width="100px"/>
+                     </FlexBox>
+                  </CustomListItem>             
+               </List>
+
+            </content>  
+         </Page>
+      </pages>
+   </App>
+
+</mvc:View>
