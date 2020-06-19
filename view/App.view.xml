@@ -1,40 +1,49 @@
 <mvc:View
    controllerName="commentshub.controller.App"
    xmlns="sap.m"
+   xmlns:core="sap.ui.core"
+   xmlns:f="sap.ui.layout.form"
    xmlns:mvc="sap.ui.core.mvc"
    displayblock="true">
 
-   <App>
-      <pages>
-         <Page title="{/page/name}">
-            <content>
-               
-               <FlexBox 
-                  alignItems="Center"
-                  justifyContent="Center">          
+   <Page title="{/page/name}">      
+      <content>
+            <Label/>
 
-                  <Button text="Adicionar comentário" press=".addComment" />
-               </FlexBox>
-               
-               <List items="{/comments}">
-                  <CustomListItem type="Inactive">
-                     <FlexBox>
-                        <Text text="{id}" width="50px"/>
-                        
-                        <Text text="{comment}"/>
+            <HBox alignContent="Center"
+                  alignItems="Center">
+               <Text text="Novo comentário:" width="130px" textAlign="Center"/>   
+               <Input id="username_input" placeholder="Seu nome"/>
+               <Input id="comment_input" placeholder="Seu Comentário"/> 
+               <Button text="Adicionar" press=".addComment"/>
+            </HBox>
 
-                        <Button 
-                           text="Excluir"
-                           class="content"
-                           press=".rmComment"
-                           width="100px"/>
-                     </FlexBox>
-                  </CustomListItem>             
-               </List>
+            <Label/>
+            <Table items="{/comments}">
 
-            </content>  
-         </Page>
-      </pages>
-   </App>
+                     <columns>
+                        <Column width="12em"><Text text="Usuário" /></Column>
+                        <Column demandPopin="true"><Text text="Comentários" /></Column>
+                        <Column hAlign="End"><Text text="Identificação" /></Column>
+                        <Column hAlign="Center"><Text text="Ações" /></Column>
+                     </columns>
 
+                     <items>
+                        <ColumnListItem press=".detailsComment">
+                           <cells>
+                              <ObjectIdentifier title="{username}" />
+                              <Text text="{comment}" />
+                              <ObjectNumber number="{id}"/>
+                              <Button 
+                                 id="1"
+                                 press=".rmComment($event, ${id})" 
+                                 text="Excluir"
+                              />
+                           </cells>
+                        </ColumnListItem>
+                     </items>
+
+            </Table>
+         </content>
+      </Page>
 </mvc:View>
